@@ -1,61 +1,92 @@
-<!doctype html>
-<html>
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link rel="shortcut icon" href="img/favicon.ico" />
+	<link rel="stylesheet" type="text/css" href="css/default.css" title="default" />
 
-<style type="text/css">
-   #layer1 {
-    width: 100%; /* Ширина первого слоя */
-    padding: 10px; /* Поля вокруг текста */
-    background: #AACCAA; /* Цвет фона */
-   }
-   #layer2 {
-    width: 100%; /* Ширина второго слоя */
-    background: #cc0; /* Цвет фона */
-   }
-   #layer2 P {
-    padding: 10px; /* Поля вокруг параграфа */
-   }
-   #layer3 {
-    background: #3ca; /* Цвет фона третьего слоя */
-    padding: 10px; /* Поля вокруг текста */
-   }
-	 TABLE {
-    width: 600px; /* Ширина таблицы */
-    border-collapse: collapse; /* Убираем двойные линии между ячейками */
-	border: 2px solid #FDFDFD; /* Прячем рамку вокруг таблицы */
-   }
-   TD, TH {
-    padding: 10px; /* Поля вокруг содержимого таблицы */
-	border: 0px solid #FDFDFD; /
-	}
-  </style>
+	<title>Пример интернет-магазина</title>
+	<meta name="description" content="Your description goes here." />
+	<meta name="keywords" content="your, keywords, here" />
+	<meta name="copyright" content="yourcompany.com" />
 
-
-<meta charset="utf-8">
-<title>WebGL project</title>
-<link href="styles.css" rel="stylesheet" type="text/css">
+	<!-- jQuery -->
+	<script src="js/jquery-1.3.2.min.js" type="text/javascript"></script>
+	
+	<!-- jQuery slider plugin -->
+	<script src="js/easySlider1.5.js" type="text/javascript" ></script>
 </head>
 
-<body style="background-color:#FDFDFD;">
-<div id="layer1">
-<h1>Добро пожаловать в интернет магазин!</h1>
-</div><br>
-<div class="parent"><table width="200" border="1">
-  <tbody>
-    <tr>
-      <td> 
-      <div class="block">
- <iframe src="viewport5.html" width="800" height="300" align="center">
 
- </iframe>
- </div></td>
-      <td><button>Выбрать изделие 1</button><button>Выбрать изделие 2</button><button>Выбрать изделие 3</button></td>
-    </tr>
+<body id="home">
+	<div id="wrapper">
+	
+	<div id="header">
+		<!-- The name of your website -->
+		<h1><a href="index.html"><strong>Интернет</strong>-магазин</a></h1>
+		<!-- Tagline -->
+		<p class="tagline">Дипломный проект</p>
+		<ul>
+			<!-- Navigation - the current page is highlighted with css class "current". -->
+			<li class="current"><a href="index.html">Выбор моделей <span class="navi-description">главная страница</span></a></li>
+			
+			<li><a href="portfolio.html">Наши работы <span class="navi-description">портфолио</span></a></li>
+			<li><a href="about.html">О нас <span class="navi-description">история компании</span></a></li>
+			<li><a href="contact.html">Контакты <span class="navi-description">адрес компании</span></a></li>
+		</ul><!-- End navigation -->
 
-  </tbody>
-</table>
+		<!-- Search -->
+		<div id="searchbox">
+			<form action="" id="search" method="post">
+				<fieldset>
+					<input type="submit" id="searchSubmit" value="Поиск" />
+					<input type="text" name="searchTerm" size="20" />
+				</fieldset>
+			</form>
+		</div><!-- End search -->
+	</div><!-- End header -->
 
-   
+	<div id="contentArea">
+			<div id="intro">
+			<!-- Just change your own images to the list. Size is 920x320 -->
+			<!-- Settings can be changed in "/js/easySlider1.5.js" -->
+			<div id="slider1">
+		 <iframe src="viewport5.html" width="915" height="300" align="center"></iframe> <!-- Фрейм с дипломной работой. -->
+			</div><!-- End slider -->
+		</div><!-- End intro -->
+	</div><!-- End contentArea -->
+
+
+	<div id="footerContent">
+		<div class="footerColumn">
+			<a href="http://themeforest.net/item/businexx/29634?ref=myTheme">
+			<!-- Change your own image, size 275x80 -->
+			<img src="img/promo3.jpg" alt="" title="" /></a>
+			<h4>Реклама товара 1</h4>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, tempor incididunt. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p> <a href="http://themeforest.net/item/businexx/29634?ref=myTheme" class="box">Посмотреть</a>
+		</div><!-- End footerColumn -->
+
+		<div class="footerColumn">
+			<img src="img/promo1.jpg" alt="" title="" /><!-- Change your own image, size 275x80 -->
+			<h4>Реклама товара 2</h4>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, <a href="#">sed do eiusmod</a> tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p> <a href="#" class="box">Посмотреть</a>
+		</div><!-- End footerColumn -->
+
+		<div class="footerColumn last">
+			<!-- Contact information -->
+			<h5>Адрес:</h5> <p>ул. Ленина, 24</p>
+			<h5>Телефон:</h5> <p>+7 (343) 100-00-00</p>
+			<h5>E-mail:</h5> <p><a href="mailto:contact@company.com">contact@shop.ru</a></p>
+			<a href="contact.html" class="box">Написать нам</a>
+		</div><!-- End footerColumn -->
+			
+			<div id="footerLinks">
+			<p><a href="index.html">Выбор моделей</a> | <a href="portfolio.html">Наши работы</a> | <a href="about.html">О нас</a> | <a href="contact.html">Контакты</a></p>
+
+			<p class="right">&copy; 2017 Пример интернет-магазина.</p>
+		</div><!-- End footerLinks -->
+	</div><!-- End footerContent -->
+</div><!-- End wrapper -->
 
 </body>
 </html>

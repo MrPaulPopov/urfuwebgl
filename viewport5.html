@@ -1,0 +1,323 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Animation</title>
+    <style>
+      body { font-family: Arial; color: #ff6a00; background-color: #333; margin: 0px; overflow: hidden; }
+   #footer {
+    position: fixed; /* Фиксированное положение */
+    left: 0; bottom: 0; /* Левый нижний угол */
+    padding: 10px; /* Поля вокруг текста */
+    background: #39b54a; /* Цвет фона */
+    color: #fff; /* Цвет текста */
+    width: 100%; /* Ширина слоя */
+   }
+ #rightcol {
+  position: absolute; /* Абсолютное позиционирование */
+  right: 0; /* Положение от правого края окна */
+  top: 30px; /* Положение от верхнего края */
+  width: 200px; /* Ширина колонки */
+ } 
+    </style>
+</head>
+<body>
+    <div id="rightcol">
+   <h2>Одежда</h2><br>
+   Толстовка<br>
+   Футболка<br>
+   Рубашка и жилет<br><br>
+   Джинсы<br>
+   Брюки
+   </div>
+   	<script src="FBXLoader2.js"></script>
+    <script src="three.min.js"></script>
+    <script src="OrbitControls.js"></script>
+    <script src="JDLoader.min.js"></script>
+    <script>
+        var meshes = [], mixers = [], hemisphereLight, camera, scene, renderer, controls;
+        var clock = new THREE.Clock;
+		
+		var modelintop = 'hoodie.jd';
+		var modelinbottom = '';
+					
+        init();
+        animate();
+
+        function init()
+        {
+
+			
+            container = document.createElement('div');
+            document.body.appendChild(container);
+            scene = new THREE.Scene();                            
+
+            //hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x222222, 0.9); //( skyColor, groundColor, intensity )
+            //hemisphereLight.position.set(0, 10000, 0);
+            //scene.add(hemisphereLight);
+
+            scene.add(new THREE.AmbientLight(0x161616, 1));
+
+            renderer = new THREE.WebGLRenderer({ antialias: true }); //включен антиалиасинг
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+			renderer.setClearColor (0x444444, 1); //цвет фона
+            container.appendChild(renderer.domElement);
+			
+            window.addEventListener('resize', onWindowResize, false);
+
+            var loader = new THREE.JDLoader();
+            loader.load("model.jd", //hoodie, denim
+                        function (data)
+                        {
+                            
+				
+							var multiMaterial = new THREE.MultiMaterial(data.materials);
+                            for (var i = 0; i < data.geometries.length; ++i)
+                            {
+                                var mesh = new THREE.SkinnedMesh(data.geometries[i], multiMaterial);
+                                meshes.push(mesh);
+                                scene.add(mesh);
+
+                                if (mesh.geometry.animations)
+                                {
+                                    var mixer = new THREE.AnimationMixer(mesh);
+                                    mixers.push(mixer);
+                                    mixer.clipAction(mesh.geometry.animations[0]).play();
+                                }
+                            }
+
+                            camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10 * data.boundingSphere.radius);
+                            camera.position.z = data.boundingSphere.center.z + 2 * data.boundingSphere.radius; //было 2.5 вместо 1
+							camera.position.y = data.boundingSphere.center.z + 1 * data.boundingSphere.radius;
+                            camera.lookAt(data.boundingSphere.center);        
+                            scene.add(camera);  //mainLight.position.copy(camera.position);
+                            camera.add(new THREE.DirectionalLight(0xFFFFFF, 1));                            
+                            if (!controls)
+                               controls = new THREE.OrbitControls(camera, renderer.domElement);
+                            controls.target.copy(data.boundingSphere.center);
+                        });
+						
+						
+
+			//НОВЫЙ загрузчик
+			            loader.load(modelintop,
+                        function (data)
+                        {
+                            var multiMaterial = new THREE.MultiMaterial(data.materials);
+                            for (var i = 0; i < data.geometries.length; ++i)
+                            {
+                                var mesh = new THREE.SkinnedMesh(data.geometries[i], multiMaterial);
+                                meshes.push(mesh);
+                                scene.add(mesh);
+
+                                if (mesh.geometry.animations)
+                                {
+                                    var mixer = new THREE.AnimationMixer(mesh);
+                                    mixers.push(mixer);
+                                    mixer.clipAction(mesh.geometry.animations[0]).play();
+                                }
+                            }
+
+                                               
+                            if (!controls)
+                               controls = new THREE.OrbitControls(camera, renderer.domElement);
+                            controls.target.copy(data.boundingSphere.center);
+                        });
+			//НОВЫЙ загрузчик
+			            loader.load("",
+                        function (data)
+                        {
+                            var multiMaterial = new THREE.MultiMaterial(data.materials);
+                            for (var i = 0; i < data.geometries.length; ++i)
+                            {
+                                var mesh = new THREE.SkinnedMesh(data.geometries[i], multiMaterial);
+                                meshes.push(mesh);
+                                scene.add(mesh);
+
+                                if (mesh.geometry.animations)
+                                {
+                                    var mixer = new THREE.AnimationMixer(mesh);
+                                    mixers.push(mixer);
+                                    mixer.clipAction(mesh.geometry.animations[0]).play();
+                                }
+                            }
+
+                                               
+                            if (!controls)
+                               controls = new THREE.OrbitControls(camera, renderer.domElement);
+                            controls.target.copy(data.boundingSphere.center);
+                        });
+        }
+		
+        function animate()
+        {
+            var delta = clock.getDelta();
+            for (var i = 0; i < mixers.length; ++i)
+                mixers[i].update(delta);
+
+            if (controls) controls.update();
+
+            if (camera)  renderer.render(scene, camera);
+
+            requestAnimationFrame(animate);
+        }
+
+        function onWindowResize()
+        {
+            if (camera)
+            {
+              camera.aspect = window.innerWidth / window.innerHeight;
+              camera.updateProjectionMatrix();
+            }
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+		
+		function script1()
+		{
+        var meshes = [], mixers = [], hemisphereLight, camera, scene, renderer, controls;
+        var clock = new THREE.Clock;
+		
+		var modelintop = 'hoodie.jd';
+		var modelinbottom = '';
+					
+        init();
+        animate();
+
+        function init()
+        {
+
+			
+            container = document.createElement('div');
+            document.body.appendChild(container);
+            scene = new THREE.Scene();                            
+
+            //hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x222222, 0.9); //( skyColor, groundColor, intensity )
+            //hemisphereLight.position.set(0, 10000, 0);
+            //scene.add(hemisphereLight);
+
+            scene.add(new THREE.AmbientLight(0x161616, 1));
+
+            renderer = new THREE.WebGLRenderer({ antialias: true }); //включен антиалиасинг
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+			renderer.setClearColor (0x444444, 1); //цвет фона
+            container.appendChild(renderer.domElement);
+			
+            window.addEventListener('resize', onWindowResize, false);
+
+            var loader = new THREE.JDLoader();
+            loader.load("model.jd", //hoodie, denim
+                        function (data)
+                        {
+                            
+				
+							var multiMaterial = new THREE.MultiMaterial(data.materials);
+                            for (var i = 0; i < data.geometries.length; ++i)
+                            {
+                                var mesh = new THREE.SkinnedMesh(data.geometries[i], multiMaterial);
+                                meshes.push(mesh);
+                                scene.add(mesh);
+
+                                if (mesh.geometry.animations)
+                                {
+                                    var mixer = new THREE.AnimationMixer(mesh);
+                                    mixers.push(mixer);
+                                    mixer.clipAction(mesh.geometry.animations[0]).play();
+                                }
+                            }
+
+                            camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10 * data.boundingSphere.radius);
+                            camera.position.z = data.boundingSphere.center.z + 2 * data.boundingSphere.radius; //было 2.5 вместо 1
+							camera.position.y = data.boundingSphere.center.z + 1 * data.boundingSphere.radius;
+                            camera.lookAt(data.boundingSphere.center);        
+                            scene.add(camera);  //mainLight.position.copy(camera.position);
+                            camera.add(new THREE.DirectionalLight(0xFFFFFF, 1));                            
+                            if (!controls)
+                               controls = new THREE.OrbitControls(camera, renderer.domElement);
+                            controls.target.copy(data.boundingSphere.center);
+                        });
+						
+						
+			//НОВЫЙ загрузчик
+			            loader.load(modelintop,
+                        function (data)
+                        {
+                            var multiMaterial = new THREE.MultiMaterial(data.materials);
+                            for (var i = 0; i < data.geometries.length; ++i)
+                            {
+                                var mesh = new THREE.SkinnedMesh(data.geometries[i], multiMaterial);
+                                meshes.push(mesh);
+                                scene.add(mesh);
+
+                                if (mesh.geometry.animations)
+                                {
+                                    var mixer = new THREE.AnimationMixer(mesh);
+                                    mixers.push(mixer);
+                                    mixer.clipAction(mesh.geometry.animations[0]).play();
+                                }
+                            }
+
+                                               
+                            if (!controls)
+                               controls = new THREE.OrbitControls(camera, renderer.domElement);
+                            controls.target.copy(data.boundingSphere.center);
+                        });
+			//НОВЫЙ загрузчик
+			            loader.load("",
+                        function (data)
+                        {
+                            var multiMaterial = new THREE.MultiMaterial(data.materials);
+                            for (var i = 0; i < data.geometries.length; ++i)
+                            {
+                                var mesh = new THREE.SkinnedMesh(data.geometries[i], multiMaterial);
+                                meshes.push(mesh);
+                                scene.add(mesh);
+
+                                if (mesh.geometry.animations)
+                                {
+                                    var mixer = new THREE.AnimationMixer(mesh);
+                                    mixers.push(mixer);
+                                    mixer.clipAction(mesh.geometry.animations[0]).play();
+                                }
+                            }
+
+                                               
+                            if (!controls)
+                               controls = new THREE.OrbitControls(camera, renderer.domElement);
+                            controls.target.copy(data.boundingSphere.center);
+                        });
+        }
+		
+        function animate()
+        {
+            var delta = clock.getDelta();
+            for (var i = 0; i < mixers.length; ++i)
+                mixers[i].update(delta);
+
+            if (controls) controls.update();
+
+            if (camera)  renderer.render(scene, camera);
+
+            requestAnimationFrame(animate);
+        }
+
+        function onWindowResize()
+        {
+            if (camera)
+            {
+              camera.aspect = window.innerWidth / window.innerHeight;
+              camera.updateProjectionMatrix();
+            }
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+		}
+		function script2()
+		{
+		
+		}
+    </script> 
+
+</body>
+</html>
