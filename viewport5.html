@@ -195,7 +195,8 @@
 			var obj = scene.getObjectByName('formalpants');
 			remove(obj);
 			var obj = scene.getObjectByName('engine');
-			cancelAnimationFrame(obj);
+			remove(obj);
+			var obj = scene.getObjectByName('mixer');
 			remove(obj);
 		}
 		
