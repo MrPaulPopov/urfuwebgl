@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Animation</title>
     <style>
-      body { font-family: Arial; color: #ff6a00; background-color: #333; margin: 0px; overflow: hidden; }
+      body { font-family: Arial; color: #ff6a00; margin: 0px; overflow: hidden; }
    #footer {
     position: fixed; /* Фиксированное положение */
     left: 0; bottom: 0; /* Левый нижний угол */
@@ -20,17 +20,11 @@
   top: 30px; /* Положение от верхнего края */
   width: 200px; /* Ширина колонки */
  } 
+
     </style>
 </head>
 <body>
-    <div id="rightcol">
-   <h2>Одежда</h2><br>
-   Толстовка<br>
-   Футболка<br>
-   Рубашка и жилет<br><br>
-   Джинсы<br>
-   Брюки
-   </div>
+
    	<script src="FBXLoader2.js"></script>
     <script src="three.min.js"></script>
     <script src="OrbitControls.js"></script>
@@ -38,26 +32,203 @@
     <script>
         var meshes = [], mixers = [], hemisphereLight, camera, scene, renderer, controls;
         var clock = new THREE.Clock;
+		/////////////////////////////////////////////////////////////////////////////
+		function addHoodie() 
+		{ 
+			loader.load("hoodie.jd", //hoodie, denim
+                        function (data)
+                        {
+							var multiMaterial = new THREE.MultiMaterial(data.materials);
+                            for (var i = 0; i < data.geometries.length; ++i)
+                            {
+                                var mesh = new THREE.SkinnedMesh(data.geometries[i], multiMaterial);
+								mesh.name = 'hoodie';
+                                meshes.push(mesh);
+                                scene.add(mesh);
+
+                                if (mesh.geometry.animations)
+                                {
+                                    var mixer = new THREE.AnimationMixer(mesh);
+                                    mixers.push(mixer);
+                                    mixer.clipAction(mesh.geometry.animations[0]).play();
+                                }
+                            }
+                        });
+		}
 		
-		var modelintop = 'hoodie.jd';
-		var modelinbottom = '';
+		function addTshirt() 
+		{ 
+			loader.load("tshirt.jd", //hoodie, denim
+                        function (data)
+                        {
+							var multiMaterial = new THREE.MultiMaterial(data.materials);
+                            for (var i = 0; i < data.geometries.length; ++i)
+                            {
+                                var mesh = new THREE.SkinnedMesh(data.geometries[i], multiMaterial);
+								mesh.name = 'tshirt';
+                                meshes.push(mesh);
+                                scene.add(mesh);
+
+                                if (mesh.geometry.animations)
+                                {
+                                    var mixer = new THREE.AnimationMixer(mesh);
+                                    mixers.push(mixer);
+                                    mixer.clipAction(mesh.geometry.animations[0]).play();
+                                }
+                            }
+                        });
+		}
+		
+		function addFormaltop() 
+		{ 
+			loader.load("formaltop.jd",
+                        function (data)
+                        {
+							var multiMaterial = new THREE.MultiMaterial(data.materials);
+                            for (var i = 0; i < data.geometries.length; ++i)
+                            {
+                                var mesh = new THREE.SkinnedMesh(data.geometries[i], multiMaterial);
+								mesh.name = 'formaltop';
+                                meshes.push(mesh);
+                                scene.add(mesh);
+
+                                if (mesh.geometry.animations)
+                                {
+                                    var mixer = new THREE.AnimationMixer(mesh);
+                                    mixers.push(mixer);
+                                    mixer.clipAction(mesh.geometry.animations[0]).play();
+                                }
+                            }
+                        });
+		}
+		
+		function addDenim() 
+		{ 
+			loader.load("denim.jd",
+                        function (data)
+                        {
+							var multiMaterial = new THREE.MultiMaterial(data.materials);
+                            for (var i = 0; i < data.geometries.length; ++i)
+                            {
+                                var mesh = new THREE.SkinnedMesh(data.geometries[i], multiMaterial);
+								mesh.name = 'denim';
+                                meshes.push(mesh);
+                                scene.add(mesh);
+
+                                if (mesh.geometry.animations)
+                                {
+                                    var mixer = new THREE.AnimationMixer(mesh);
+                                    mixers.push(mixer);
+                                    mixer.clipAction(mesh.geometry.animations[0]).play();
+                                }
+                            }
+                        });
+		}
+		
+		function addFormalpants() 
+		{ 
+			loader.load("formalpants.jd",
+                        function (data)
+                        {
+							var multiMaterial = new THREE.MultiMaterial(data.materials);
+                            for (var i = 0; i < data.geometries.length; ++i)
+                            {
+                                var mesh = new THREE.SkinnedMesh(data.geometries[i], multiMaterial);
+								mesh.name = 'formalpants';
+                                meshes.push(mesh);
+                                scene.add(mesh);
+
+                                if (mesh.geometry.animations)
+                                {
+                                    var mixer = new THREE.AnimationMixer(mesh);
+                                    mixers.push(mixer);
+                                    mixer.clipAction(mesh.geometry.animations[0]).play();
+                                }
+                            }
+                        });
+		}
+		
+			function addEngine() 
+		{ 	
+			loader.load("engine.jd",
+                        function (data)
+                        {
+							var multiMaterial = new THREE.MultiMaterial(data.materials);
+                            for (var i = 0; i < data.geometries.length; ++i)
+                            {
+                                var mesh = new THREE.SkinnedMesh(data.geometries[i], multiMaterial);
+								mesh.name = 'engine';
+                                meshes.push(mesh);
+                                scene.add(mesh);
+
+                                if (mesh.geometry.animations)
+                                {
+                                    var mixer = new THREE.AnimationMixer(mesh);
+                                    mixers.push(mixer);
+                                    mixer.clipAction(mesh.geometry.animations[0]).play();
+                                }
+                            }
+                        });
+		}
+		
+		function removeTop() 
+		{ 
+			function remove(obj) {
+				scene.remove(obj);
+			}
+			var obj = scene.getObjectByName('hoodie');
+			remove(obj);
+			var obj = scene.getObjectByName('tshirt');
+			remove(obj);
+			var obj = scene.getObjectByName('formaltop');
+			remove(obj);
+			var obj = scene.getObjectByName('engine');
+			remove(obj);
+		}
+		
+		function removeBottom() 
+		{ 
+			function remove(obj) {
+				scene.remove(obj);
+			}
+			var obj = scene.getObjectByName('denim');
+			remove(obj);
+			var obj = scene.getObjectByName('formalpants');
+			remove(obj);
+			var obj = scene.getObjectByName('engine');
+			remove(obj);
+		}
+		
+		function removeExceptEngine() 
+		{ 
+			function remove(obj) {
+				scene.remove(obj);
+			}
+			var obj = scene.getObjectByName('hoodie');
+			remove(obj);
+			var obj = scene.getObjectByName('tshirt');
+			remove(obj);
+			var obj = scene.getObjectByName('formaltop');
+			remove(obj);
+			var obj = scene.getObjectByName('denim');
+			remove(obj);
+			var obj = scene.getObjectByName('formalpants');
+			remove(obj);
+			var obj = scene.getObjectByName('model');
+			remove(obj);
+		}
 					
-        init();
-        animate();
-
-        function init()
-        {
-
+///////////////////////////////////////////////////////////////////////////////
 			
             container = document.createElement('div');
             document.body.appendChild(container);
             scene = new THREE.Scene();                            
 
-            //hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x222222, 0.9); //( skyColor, groundColor, intensity )
-            //hemisphereLight.position.set(0, 10000, 0);
-            //scene.add(hemisphereLight);
+            hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x222222, 0.2); //( skyColor, groundColor, intensity )
+            hemisphereLight.position.set(0, 10000, 0);
+            scene.add(hemisphereLight);
 
-            scene.add(new THREE.AmbientLight(0x161616, 1));
+            scene.add(new THREE.AmbientLight(0x161616, 1)); //цвет, интенсивность
 
             renderer = new THREE.WebGLRenderer({ antialias: true }); //включен антиалиасинг
             renderer.setPixelRatio(window.devicePixelRatio);
@@ -71,12 +242,11 @@
             loader.load("model.jd", //hoodie, denim
                         function (data)
                         {
-                            
-				
 							var multiMaterial = new THREE.MultiMaterial(data.materials);
                             for (var i = 0; i < data.geometries.length; ++i)
                             {
                                 var mesh = new THREE.SkinnedMesh(data.geometries[i], multiMaterial);
+								mesh.name = 'model';
                                 meshes.push(mesh);
                                 scene.add(mesh);
 
@@ -88,8 +258,8 @@
                                 }
                             }
 
-                            camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10 * data.boundingSphere.radius);
-                            camera.position.z = data.boundingSphere.center.z + 2 * data.boundingSphere.radius; //было 2.5 вместо 1
+                            camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10 * data.boundingSphere.radius);
+                            camera.position.z = data.boundingSphere.center.z + 2.5 * data.boundingSphere.radius; //было 2.5 вместо 1
 							camera.position.y = data.boundingSphere.center.z + 1 * data.boundingSphere.radius;
                             camera.lookAt(data.boundingSphere.center);        
                             scene.add(camera);  //mainLight.position.copy(camera.position);
@@ -98,197 +268,9 @@
                                controls = new THREE.OrbitControls(camera, renderer.domElement);
                             controls.target.copy(data.boundingSphere.center);
                         });
-						
-						
-
-			//НОВЫЙ загрузчик
-			            loader.load(modelintop,
-                        function (data)
-                        {
-                            var multiMaterial = new THREE.MultiMaterial(data.materials);
-                            for (var i = 0; i < data.geometries.length; ++i)
-                            {
-                                var mesh = new THREE.SkinnedMesh(data.geometries[i], multiMaterial);
-                                meshes.push(mesh);
-                                scene.add(mesh);
-
-                                if (mesh.geometry.animations)
-                                {
-                                    var mixer = new THREE.AnimationMixer(mesh);
-                                    mixers.push(mixer);
-                                    mixer.clipAction(mesh.geometry.animations[0]).play();
-                                }
-                            }
-
-                                               
-                            if (!controls)
-                               controls = new THREE.OrbitControls(camera, renderer.domElement);
-                            controls.target.copy(data.boundingSphere.center);
-                        });
-			//НОВЫЙ загрузчик
-			            loader.load("",
-                        function (data)
-                        {
-                            var multiMaterial = new THREE.MultiMaterial(data.materials);
-                            for (var i = 0; i < data.geometries.length; ++i)
-                            {
-                                var mesh = new THREE.SkinnedMesh(data.geometries[i], multiMaterial);
-                                meshes.push(mesh);
-                                scene.add(mesh);
-
-                                if (mesh.geometry.animations)
-                                {
-                                    var mixer = new THREE.AnimationMixer(mesh);
-                                    mixers.push(mixer);
-                                    mixer.clipAction(mesh.geometry.animations[0]).play();
-                                }
-                            }
-
-                                               
-                            if (!controls)
-                               controls = new THREE.OrbitControls(camera, renderer.domElement);
-                            controls.target.copy(data.boundingSphere.center);
-                        });
-        }
-		
-        function animate()
-        {
-            var delta = clock.getDelta();
-            for (var i = 0; i < mixers.length; ++i)
-                mixers[i].update(delta);
-
-            if (controls) controls.update();
-
-            if (camera)  renderer.render(scene, camera);
-
-            requestAnimationFrame(animate);
-        }
-
-        function onWindowResize()
-        {
-            if (camera)
-            {
-              camera.aspect = window.innerWidth / window.innerHeight;
-              camera.updateProjectionMatrix();
-            }
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        }
-		
-		function script1()
-		{
-        var meshes = [], mixers = [], hemisphereLight, camera, scene, renderer, controls;
-        var clock = new THREE.Clock;
-		
-		var modelintop = 'hoodie.jd';
-		var modelinbottom = '';
 					
-        init();
-        animate();
-
-        function init()
-        {
-
-			
-            container = document.createElement('div');
-            document.body.appendChild(container);
-            scene = new THREE.Scene();                            
-
-            //hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x222222, 0.9); //( skyColor, groundColor, intensity )
-            //hemisphereLight.position.set(0, 10000, 0);
-            //scene.add(hemisphereLight);
-
-            scene.add(new THREE.AmbientLight(0x161616, 1));
-
-            renderer = new THREE.WebGLRenderer({ antialias: true }); //включен антиалиасинг
-            renderer.setPixelRatio(window.devicePixelRatio);
-            renderer.setSize(window.innerWidth, window.innerHeight);
-			renderer.setClearColor (0x444444, 1); //цвет фона
-            container.appendChild(renderer.domElement);
-			
-            window.addEventListener('resize', onWindowResize, false);
-
-            var loader = new THREE.JDLoader();
-            loader.load("model.jd", //hoodie, denim
-                        function (data)
-                        {
-                            
-				
-							var multiMaterial = new THREE.MultiMaterial(data.materials);
-                            for (var i = 0; i < data.geometries.length; ++i)
-                            {
-                                var mesh = new THREE.SkinnedMesh(data.geometries[i], multiMaterial);
-                                meshes.push(mesh);
-                                scene.add(mesh);
-
-                                if (mesh.geometry.animations)
-                                {
-                                    var mixer = new THREE.AnimationMixer(mesh);
-                                    mixers.push(mixer);
-                                    mixer.clipAction(mesh.geometry.animations[0]).play();
-                                }
-                            }
-
-                            camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10 * data.boundingSphere.radius);
-                            camera.position.z = data.boundingSphere.center.z + 2 * data.boundingSphere.radius; //было 2.5 вместо 1
-							camera.position.y = data.boundingSphere.center.z + 1 * data.boundingSphere.radius;
-                            camera.lookAt(data.boundingSphere.center);        
-                            scene.add(camera);  //mainLight.position.copy(camera.position);
-                            camera.add(new THREE.DirectionalLight(0xFFFFFF, 1));                            
-                            if (!controls)
-                               controls = new THREE.OrbitControls(camera, renderer.domElement);
-                            controls.target.copy(data.boundingSphere.center);
-                        });
-						
-						
-			//НОВЫЙ загрузчик
-			            loader.load(modelintop,
-                        function (data)
-                        {
-                            var multiMaterial = new THREE.MultiMaterial(data.materials);
-                            for (var i = 0; i < data.geometries.length; ++i)
-                            {
-                                var mesh = new THREE.SkinnedMesh(data.geometries[i], multiMaterial);
-                                meshes.push(mesh);
-                                scene.add(mesh);
-
-                                if (mesh.geometry.animations)
-                                {
-                                    var mixer = new THREE.AnimationMixer(mesh);
-                                    mixers.push(mixer);
-                                    mixer.clipAction(mesh.geometry.animations[0]).play();
-                                }
-                            }
-
-                                               
-                            if (!controls)
-                               controls = new THREE.OrbitControls(camera, renderer.domElement);
-                            controls.target.copy(data.boundingSphere.center);
-                        });
-			//НОВЫЙ загрузчик
-			            loader.load("",
-                        function (data)
-                        {
-                            var multiMaterial = new THREE.MultiMaterial(data.materials);
-                            for (var i = 0; i < data.geometries.length; ++i)
-                            {
-                                var mesh = new THREE.SkinnedMesh(data.geometries[i], multiMaterial);
-                                meshes.push(mesh);
-                                scene.add(mesh);
-
-                                if (mesh.geometry.animations)
-                                {
-                                    var mixer = new THREE.AnimationMixer(mesh);
-                                    mixers.push(mixer);
-                                    mixer.clipAction(mesh.geometry.animations[0]).play();
-                                }
-                            }
-
-                                               
-                            if (!controls)
-                               controls = new THREE.OrbitControls(camera, renderer.domElement);
-                            controls.target.copy(data.boundingSphere.center);
-                        });
-        }
+		
+		animate();
 		
         function animate()
         {
@@ -300,7 +282,11 @@
 
             if (camera)  renderer.render(scene, camera);
 
-            requestAnimationFrame(animate);
+			setTimeout( function() {
+
+        	requestAnimationFrame( animate );
+
+			}, 1000 / 30 ); //ограничение на 30 кадров в секунду
         }
 
         function onWindowResize()
@@ -312,12 +298,17 @@
             }
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
-		}
-		function script2()
-		{
 		
-		}
     </script> 
-
+    
+    <div id="rightcol">
+   <h2>Одежда</h2><br>
+   <span style="cursor:pointer" onclick="removeTop();addHoodie();">Толстовка</span><br>
+   <span style="cursor:pointer" onclick="removeTop();addTshirt();">Футболка</span><br>
+   <span style="cursor:pointer" onclick="removeTop();addFormaltop();">Рубашка</span><br><br>
+   <span style="cursor:pointer" onclick="removeBottom();addDenim();">Джинсы</span><br>
+   <span style="cursor:pointer" onclick="removeBottom();addFormalpants();">Брюки</span><br>
+   <span style="cursor:pointer" onclick="removeExceptEngine();addEngine();">Двигатель</span><br>
+   </div>
 </body>
 </html>
